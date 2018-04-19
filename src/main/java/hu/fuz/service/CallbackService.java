@@ -14,7 +14,7 @@ import javax.ws.rs.core.MediaType;
 public class CallbackService {
 
 
-    @GET
+    @POST
     @Consumes(MediaType.TEXT_PLAIN)
     @ApiOperation(
             value = "Callback service",
