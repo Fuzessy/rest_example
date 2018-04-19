@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>hu.fuz</groupId>
+  <artifactId>rest_example</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>war</packaging>
+
+  <name>rest_example Maven Webapp</name>
+  <!-- FIXME change it to the project's website -->
+  <url>http://www.example.com</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <swagger-maven-plugin-version>3.1.5</swagger-maven-plugin-version>
+  </properties>
+
+  <build>
+    <finalName>rest_example</finalName>
+    <plugins>
+      <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-maven-plugin -->
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>9.4.9.v20180320</version>
+      </plugin>
+
+      <!-- swagger api generálásához használom
+        https://github.com/kongchen/swagger-maven-plugin/blob/master/README.md alapján
+      -->
+      <plugin>
+        <groupId>com.github.kongchen</groupId>
+        <artifactId>swagger-maven-plugin</artifactId>
+        <version>${swagger-maven-plugin-version}</version>
+        <configuration>
+          <apiSources>
+            <apiSource>
+              <locations>
+                <location>hu.fuz.service</location>
+              </locations>
+              <springmvc>false</springmvc>
+              <info>
+                <title>IMAPI callback service</title>
+                <version>0.1ts</version>
+              </info>
+              <swaggerDirectory>${project.basedir}/target</swaggerDirectory>
+              <outputPath>${project.basedir}/target}</outputPath>
+              <swaggerFileName>helloim</swaggerFileName>
+            </apiSource>
+          </apiSources>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+
+    <!-- https://mvnrepository.com/artifact/javax.servlet/servlet-api -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>3.0-alpha-1</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.glassfish.jersey.inject</groupId>
+      <artifactId>jersey-hk2</artifactId>
+      <version>2.27</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.glassfish.jersey.containers</groupId>
+      <artifactId>jersey-container-grizzly2-servlet</artifactId>
+      <version>2.27</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/io.swagger/swagger-core -->
+    <!-- az igazi sikerhez ki kell swagger annotációkkal dekorálni a kódot, bár
+        az lenne az igaz, ha a swagger.json-t megírnám, és úgy generálnám
+        az osztályokat -->
+    <dependency>
+      <groupId>io.swagger</groupId>
+      <artifactId>swagger-core</artifactId>
+      <version>1.5.0</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+</project>
