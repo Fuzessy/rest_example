@@ -4,19 +4,19 @@
 # * 'gtrp' and 'gtr' create a GET request with or without query parameters;
 # * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
-POST /rest/hello/im/callback/me
+POST /hello_im/callback
 Host: localhost:8080
-Content-Type: text/plain
+Content-Type: application/json
 
-Give me the token please! misdnasd űfsdaof sdakfsdoőf ú
-df
-úsdf
-ésd
-fsdúaf
-úsda
-f
-dsafédsa
-f
+{
+    "message"   : "hy",
+    "token"     : "almafa",
+    "colors"       :
+        [
+                { "color" : "blue" },
+                { "color" : "red" }
+        ]
+}
 
 
 ###

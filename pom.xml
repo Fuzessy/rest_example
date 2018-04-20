@@ -17,6 +17,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <!-- versions -->
+    <jetty-server-version>9.4.9.v20180320</jetty-server-version>
     <swagger-maven-plugin-version>3.1.5</swagger-maven-plugin-version>
   </properties>
 
@@ -54,6 +56,44 @@
             </apiSource>
           </apiSources>
         </configuration>
+        <!-- úgy adom hozzá a goal-t, hogy felveszek egy ilyen bejegyzést mint ami itt van:
+          id -> valami egyedi
+          phase -> melyik fázisban szeretném futtatni a
+          goal -> swagger generate nevű goal-ját
+        -->
+        <executions>
+          <execution>
+            <id>make-swagger-api</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- mvn clean compile assembly:single -->
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>hu.fuz.service.BFCallbackServer</mainClass>
+            </manifest>
+          </archive>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
@@ -78,6 +118,23 @@
       <groupId>org.glassfish.jersey.containers</groupId>
       <artifactId>jersey-container-grizzly2-servlet</artifactId>
       <version>2.27</version>
+    </dependency>
+
+    <!-- jetty dependencies -->
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+      <version>9.4.9.v20180320</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-servlet</artifactId>
+      <version>9.4.9.v20180320</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty.websocket</groupId>
+      <artifactId>websocket-server</artifactId>
+      <version>9.4.9.v20180320</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/io.swagger/swagger-core -->
