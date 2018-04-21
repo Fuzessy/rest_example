@@ -7,11 +7,14 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 
-import javax.ws.rs.Consumes;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import java.io.IOException;
+import java.util.Enumeration;
 
 @Path("/hello_im")
 @Api(value = "/hello_im", description = "Callback listener")
@@ -19,9 +22,10 @@ public class CallbackService {
 
 
     @POST
-    @Consumes({
-            MediaType.TEXT_PLAIN,
-            MediaType.APPLICATION_JSON})
+//    @Consumes({
+//            MediaType.TEXT_PLAIN,
+//            MediaType.
+//            MediaType.APPLICATION_JSON})
     @Produces(MediaType.TEXT_PLAIN)
     @ApiOperation(
             value = "Callback service",
@@ -32,10 +36,33 @@ public class CallbackService {
             message = "This is only your original message.")
     @Path("callback")
     public String hello(
-            @ApiParam(value = "Body callback message", required = true) String message){
-        System.out.println("<################## I called with message: ##################"
-                + "\n" + message + "\n"
-                + ">################## I called with message: ##################");
-        return message;
+            @Context HttpServletRequest request,
+            @ApiParam(value = "Body callback message", required = false) String message) throws IOException {
+        StringBuilder msg = new StringBuilder();
+        msg.append("<################## I called with message: ##################");
+        msg.append("\n");
+        msg.append("METHOD: " + request.getMethod());
+        msg.append("\n");
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while(headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            msg.append("Header Name - " + headerName + ", Value - " + request.getHeader(headerName));
+            msg.append("\n");
+        }
+
+        Enumeration<String> params = request.getParameterNames();
+        while(params.hasMoreElements()){
+            String paramName = params.nextElement();
+            msg.append("Parameter Name - "+paramName+", Value - "+request.getParameter(paramName));
+            msg.append("\n");
+        }
+
+        msg.append("\n" + "BODY:" + "\n");
+        msg.append(message);
+        msg.append("\n");
+
+        msg.append(">################## I called with message: ##################");
+        System.out.println(msg.toString());
+        return "Thank you IM!";
     }
 }
